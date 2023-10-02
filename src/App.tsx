@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <Greeting name="Thailand!" greetingMsg="Hello" />
+      <Greeting name="Thailand!" greetingMsg="Hello" isLoggin={true} />
     </div>
   )
 }

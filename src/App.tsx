@@ -21,10 +21,6 @@ function App() {
     } catch (err) {
       console.log(err)
     }
-
-    // setPosts(currentPost)
-    setNewTitle('')
-    setNewBody('')
   }
   if (isLoading) return <h1>LOADING...</h1>
   return (

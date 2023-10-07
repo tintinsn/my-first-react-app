@@ -3,8 +3,9 @@ import Greeting from './components/Greeting'
 import Navbar from './components/Navbar'
 import { PostDTO } from './types/dto'
 import Post from './components/Post'
+import { FormEvent, useState } from 'react'
 
-const posts: PostDTO[] = [
+const initialPosts: PostDTO[] = [
   {
     id: 1,
     userId: 1,
@@ -26,10 +27,37 @@ const posts: PostDTO[] = [
 ]
 
 function App() {
+  const [posts, setPosts] = useState<PostDTO[]>(initialPosts)
+  const [newTitle, setNewTitle] = useState<string>('')
+  const [newBody, setNewBody] = useState<string>('')
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+
+    const currentPost = [...posts]
+    currentPost.push({
+      id: Math.floor(Math.random() * 1000),
+      userId: Math.floor(Math.random() * 1000),
+      title: newTitle,
+      body: newBody,
+    })
+
+    setPosts(currentPost)
+  }
+
   return (
     <div className="App">
       <Navbar />
-      <Greeting name="Thailand!" greetingMsg="Hello" isLoggin={true} />
+      <Greeting name="Thailand!" isLoggin={true} />
+
+      <form onSubmit={handleSubmit}>
+        <label>Title</label>
+        <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} required />
+        <label>Body</label>
+        <input type="text" value={newBody} onChange={(e) => setNewBody(e.target.value)} required />
+        <button>submit</button>
+      </form>
+
       <div className="feed-container">
         {posts.map((post) => {
           return <Post key={post.id} post={post} />

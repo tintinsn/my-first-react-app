@@ -43,6 +43,8 @@ function App() {
     })
 
     setPosts(currentPost)
+    setNewTitle('')
+    setNewBody('')
   }
 
   return (

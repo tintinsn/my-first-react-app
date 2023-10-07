@@ -1,50 +1,32 @@
 import './App.css'
 import Greeting from './components/Greeting'
 import Navbar from './components/Navbar'
-import { PostDTO } from './types/dto'
 import Post from './components/Post'
 import { FormEvent, useState } from 'react'
-
-const initialPosts: PostDTO[] = [
-  {
-    id: 1,
-    userId: 1,
-    title: "Let's learn React!",
-    body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
-  },
-  {
-    id: 2,
-    userId: 2,
-    title: 'How to install Node.js',
-    body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
-  },
-  {
-    id: 3,
-    userId: 3,
-    title: 'Basic HTML',
-    body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
-  },
-]
+import usePosts from './hook/usePosts'
 
 function App() {
-  const [posts, setPosts] = useState<PostDTO[]>(initialPosts)
   const [newTitle, setNewTitle] = useState<string>('')
   const [newBody, setNewBody] = useState<string>('')
+  const { posts, isLoading, disableSubmit, createPost } = usePosts()
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
-    const currentPost = [...posts]
-    currentPost.push({
-      id: Math.floor(Math.random() * 1000),
-      userId: Math.floor(Math.random() * 1000),
-      title: newTitle,
-      body: newBody,
-    })
+    try {
+      await createPost(newTitle, newBody)
 
-    setPosts(currentPost)
+      setNewTitle('')
+      setNewBody('')
+    } catch (err) {
+      console.log(err)
+    }
+
+    // setPosts(currentPost)
+    setNewTitle('')
+    setNewBody('')
   }
-
+  if (isLoading) return <h1>LOADING...</h1>
   return (
     <div className="App">
       <Navbar />
@@ -55,13 +37,16 @@ function App() {
         <input type="text" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} required />
         <label>Body</label>
         <input type="text" value={newBody} onChange={(e) => setNewBody(e.target.value)} required />
-        <button>submit</button>
+        <button type="submit" disabled={disableSubmit}>
+          submit
+        </button>
       </form>
 
       <div className="feed-container">
-        {posts.map((post) => {
-          return <Post key={post.id} post={post} />
-        })}
+        {posts &&
+          posts.map((post) => {
+            return <Post key={post.id} post={post} />
+          })}
       </div>
     </div>
   )

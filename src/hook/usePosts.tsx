@@ -58,6 +58,7 @@ const usePosts = () => {
         .then((response) => {
           const currentPost = [...posts]
           currentPost.push(response.data)
+          console.log(response.data)
           setPosts(currentPost)
         })
     } catch (err) {

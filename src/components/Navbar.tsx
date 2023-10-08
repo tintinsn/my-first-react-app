@@ -8,6 +8,9 @@ const Navbar = () => {
         <NavLink className={({ isActive }) => (isActive ? classes.active : classes.inactive)} to="/">
           Feed
         </NavLink>
+        <NavLink className={({ isActive }) => (isActive ? classes.active : classes.inactive)} to="/create">
+          Create Posts
+        </NavLink>
       </div>
 
       <div className={classes.menu}>

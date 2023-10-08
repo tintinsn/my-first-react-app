@@ -1,10 +1,12 @@
-import { FormEvent, useState } from "react"
-import usePosts from "../hook/usePosts"
+import { FormEvent, useState } from 'react'
+import usePosts from '../hook/usePosts'
+import { useNavigate } from 'react-router-dom'
 
 const Create = () => {
   const [newTitle, setNewTitle] = useState<string>('')
   const [newBody, setNewBody] = useState<string>('')
   const { disableSubmit, createPost } = usePosts()
+  const navigate = useNavigate()
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
@@ -13,6 +15,8 @@ const Create = () => {
 
       setNewTitle('')
       setNewBody('')
+
+      navigate('/')
     } catch (err) {
       console.log(err)
     }
